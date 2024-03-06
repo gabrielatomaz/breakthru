@@ -48,4 +48,16 @@ Para instalar as dependência do projeto, utilize
 $ pip install -r requirements.txt
 ```
 
-### :computer: Projeto - Jogo de Damas
+### :computer: Projeto - Jogo de Damas [Breakthru](<https://en.wikipedia.org/wiki/Breakthru_(board_game)>)
+
+#### Busca minimax
+
+- Características:
+- Onde encontrar no código e jogabilidade:
+
+#### Poda alpha-beta
+
+- Características:
+- Onde encontrar no código e jogabilidade:
+
+#### Discussão dos resultados
