@@ -363,7 +363,10 @@ def start_game(player, ai_player):
             pygame.display.flip()
 
             board = move_ai(board, ai_player)
-            current_player = player # Depois que a AI jogar, é a vez do jogador humano
+            if (current_player == 'S'):
+                current_player = 'G'
+            else:
+                current_player = 'S'
             print(current_player)
 
 
