@@ -5,23 +5,20 @@ from pygame.locals import *
 import copy
 
 def main():
-    # Inicialização do Pygame
     pygame.init()
-    screen = pygame.display.set_mode((560, 700))  # Ajustando a altura da tela para acomodar a nova pergunta
-    pygame.display.set_caption("Checkers Game")
-    manager = pygame_gui.UIManager((560, 700))  # Ajustando a altura do manager também
+    screen = pygame.display.set_mode((560, 700)) 
+    pygame.display.set_caption("Breakthru")
+    manager = pygame_gui.UIManager((560, 700)) 
     clock = pygame.time.Clock()
     is_running = True
 
     pygame_gui.elements.UILabel(relative_rect=pygame.Rect((200, 180), (150, 100)),
                                             text='Quem irá iniciar?', manager=manager)
-    # Adicionando botões para escolha do jogador humano
     silver_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((80, 250), (150, 50)),
                                                   text='Cinza', manager=manager)
     gold_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((330, 250), (150, 50)),
                                                 text='Dourado', manager=manager)
 
-    # Adicionando pergunta para escolha do jogador da IA
     pygame_gui.elements.UILabel(relative_rect=pygame.Rect((200, 300), (150, 50)),
                                             text='Quem será a IA?', manager=manager)
     ai_silver_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((80, 340), (150, 50)),
@@ -66,10 +63,9 @@ def main():
 def start_game(player, ai_player):
     pygame.init()
     screen = pygame.display.set_mode((560, 650))
-    pygame.display.set_caption("Checkers Game")
+    pygame.display.set_caption("Breakthru")
     clock = pygame.time.Clock()
 
-    # Definindo cores
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
     SILVER = (192, 192, 192)
@@ -77,15 +73,12 @@ def start_game(player, ai_player):
     GOLD = (255, 215, 0)
     DARK_GOLD = (184, 134, 11)
 
-    # Definindo tamanho da tela e do quadrado do tabuleiro
     SCREEN_WIDTH = 560
     SCREEN_HEIGHT = 650
     SQUARE_SIZE = SCREEN_WIDTH // 7
 
-    # Definindo a fonte para o texto
     font = pygame.font.Font(None, 36)
 
-    # Função para desenhar o tabuleiro
     def draw_board(screen, board):
         screen.fill(WHITE)
         pygame.draw.rect(screen, BLACK, (0, 0, SCREEN_WIDTH, SCREEN_HEIGHT), 5)
@@ -124,61 +117,42 @@ def start_game(player, ai_player):
 
     def move_piece(board, piece, from_row, from_col, to_row, to_col):
         if board[from_row][from_col] != piece:
-            #print("Movimento inválido: Não há nenhuma peça para mover na posição especificada.")
             return board, False
 
         possible_moves = get_moves(board, from_row, from_col, piece)
-        #print(f"Peça {piece} ({from_row + 1}, {from_col + 1}) movimentos ({possible_moves})")
 
         if (to_row, to_col) not in possible_moves:
-            #print("Movimento inválido: O movimento especificado não é permitido para a peça selecionada.")
             return board, False
 
         if abs(to_row - from_row) > 1 or abs(to_col - from_col) > 1:
-            #print("Movimento inválido: a peça só pode mover uma casa de cada vez.")
             return board, False
 
         board[to_row][to_col] = piece
         board[from_row][from_col] = '-'
-        #print(f"Peça {piece} movida da posição ({from_row + 1}, {from_col + 1}) para ({to_row + 1}, {to_col + 1})")
         return board, True
 
-    # Função para obter os movimentos possíveis para uma peça
     def get_moves(board, row, col, piece):
         moves = []
         directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
         diagonal_directions = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
 
-        if piece == "X":
-            # Movimentos para frente, trás e para os lados (apenas uma casa)
-            for dr, dc in directions:
-                r, c = row + dr, col + dc
-                if 0 <= r < len(board) and 0 <= c < len(board[0]) and board[r][c] == "-":
+        # Movimentos para frente, trás e para os lados
+        for dr, dc in directions:
+            r, c = row + dr, col + dc
+            while 0 <= r < len(board) and 0 <= c < len(board[0]):
+                if board[r][c] == "-":
                     moves.append((r, c))
-            # Movimentos de "roubo" de posição nas diagonais
-            for dr, dc in diagonal_directions:
-                r, c = row + dr, col + dc
-                if 0 <= r < len(board) and 0 <= c < len(board[0]):
-                    if (board[r][c] == 'S'):
-                        moves.append((r, c))
-        else:
-            # Movimentos para frente, trás e para os lados
-            for dr, dc in directions:
-                r, c = row + dr, col + dc
-                while 0 <= r < len(board) and 0 <= c < len(board[0]):
-                    if board[r][c] == "-":
-                        moves.append((r, c))
-                    else:
-                        break
-                    r += dr
-                    c += dc
+                else:
+                    break
+                r += dr
+                c += dc
 
-            # Movimentos de "roubo" de posição nas diagonais
-            for dr, dc in diagonal_directions:
-                r, c = row + dr, col + dc
-                if 0 <= r < len(board) and 0 <= c < len(board[0]):
-                    if (piece == "S" and board[r][c] == "G") or (piece == 'G' and board[r][c] == 'S'):
-                        moves.append((r, c))
+        # Movimentos de "roubo" de posição nas diagonais
+        for dr, dc in diagonal_directions:
+            r, c = row + dr, col + dc
+            if 0 <= r < len(board) and 0 <= c < len(board[0]):
+                if (piece == "S" and board[r][c] == "G") or (piece == 'G' and board[r][c] == 'S') or (piece == 'S' and board[r][c] == 'X'):
+                    moves.append((r, c))
 
         return moves
 
@@ -256,17 +230,15 @@ def start_game(player, ai_player):
 
     def move_ai(board, ai_player):
         new_board = copy.deepcopy(board)
-        _, best_move = minimax(new_board, 3, ai_player)  # Aumentar o horizonte de busca
+        _, best_move = minimax(new_board, 3, ai_player) 
         if best_move:
             from_row, from_col, to_row, to_col = best_move
             piece = new_board[from_row][from_col]
-            # Verifica se a peça é do jogador 'G' ou 'X' antes de fazer o movimento
-            move_piece(new_board, piece, from_row, from_col, to_row, to_col)
+            new_board, was_moved = move_piece(new_board, piece, from_row, from_col, to_row, to_col)
         return new_board
 
 
 
-    # Função principal do jogo
     rows = 7
     cols = 7
     board = [["-" for _ in range(cols)] for _ in range(rows)]
@@ -285,7 +257,7 @@ def start_game(player, ai_player):
     board[6][2:5] = ["S"] * 3
 
     from_row, from_col = None, None
-    current_player = player  # Define o jogador atual como o jogador escolhido pelo usuário
+    current_player = player 
     while True:
         draw_board(screen, board)
         if check_victory(board, "G"):
@@ -298,11 +270,9 @@ def start_game(player, ai_player):
             pygame.quit()
             sys.exit()
 
-        # Verificar se é a vez do jogador humano ou da IA e atualizar o texto
-        if current_player != 'X' and current_player != 'G':
-            turn_text = font.render("Vez do jogador: " + current_player, True, BLACK)
-            turn_text_rect = turn_text.get_rect(center=(SCREEN_WIDTH // 2, 600))
-            screen.blit(turn_text, turn_text_rect)
+        turn_text = font.render("Vez do jogador: " + current_player, True, BLACK)
+        turn_text_rect = turn_text.get_rect(center=(SCREEN_WIDTH // 2, 600))
+        screen.blit(turn_text, turn_text_rect)
 
         pygame.display.flip()
 
@@ -325,14 +295,10 @@ def start_game(player, ai_player):
                     to_row, to_col = clicked_row, clicked_col
                     new_board, was_moved = move_piece(board, current_player, from_row, from_col, to_row, to_col)
                     if was_moved:
-                        #print(f"Peça {current_player} movida da posição ({from_row + 1}, {from_col + 1}) para ({to_row + 1}, {to_col + 1})")
                         draw_board(screen, board)
                         pygame.display.flip()
                         if check_victory(board, current_player):
-                            if current_player == 'X':
-                                message = 'Jogador G ganhou!'
-                            else:
-                                message = f'Jogador {current_player} ganhou!'
+                            message = f'Jogador {current_player} ganhou!'
                             font = pygame.font.Font(None, 36)
                             text = font.render(message, True, BLACK)
                             text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, 600))
@@ -355,7 +321,7 @@ def start_game(player, ai_player):
                     from_row, from_col = None, None
 
 
-        if current_player == 'X' or current_player == ai_player:
+        if current_player == ai_player:
             print(ai_player)
             turn_text = font.render("Vez do jogador: " + ai_player, True, BLACK)
             turn_text_rect = turn_text.get_rect(center=(SCREEN_WIDTH // 2, 600))
