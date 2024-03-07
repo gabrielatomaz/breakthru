@@ -343,11 +343,12 @@ def start_game(player, ai_player):
             pygame.display.flip()
 
             board = move_ai(board, ai_player)
-            if (current_player == 'S'):
-                current_player = 'G'
-            else:
-                current_player = 'S'
-            print(current_player)
+
+            if (not check_victory(board, current_player)):
+                if (current_player == 'S'):
+                    current_player = 'G'
+                else:
+                    current_player = 'S'
 
 
 
