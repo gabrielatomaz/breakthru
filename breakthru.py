@@ -143,7 +143,7 @@ def start_game(player, ai_player):
         #print(f"Peça {piece} movida da posição ({from_row + 1}, {from_col + 1}) para ({to_row + 1}, {to_col + 1})")
         return board, True
 
-     # Função para obter os movimentos possíveis para uma peça
+    # Função para obter os movimentos possíveis para uma peça
     def get_moves(board, row, col, piece):
         moves = []
         directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
@@ -177,8 +177,7 @@ def start_game(player, ai_player):
             for dr, dc in diagonal_directions:
                 r, c = row + dr, col + dc
                 if 0 <= r < len(board) and 0 <= c < len(board[0]):
-                    if (piece == "S" and board[r][c] == "G" or board[r][c] == "X") or (
-                            piece == 'G' and board[r][c] == 'S'):
+                    if (piece == "S" and board[r][c] == "G") or (piece == 'G' and board[r][c] == 'S'):
                         moves.append((r, c))
 
         return moves
@@ -291,7 +290,7 @@ def start_game(player, ai_player):
         draw_board(screen, board)
         if check_victory(board, "G"):
             font = pygame.font.Font(None, 36)
-            text = font.render('Player G wins!', True, BLACK)
+            text = font.render('Jogador G ganhou!', True, BLACK)
             text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, 600))
             screen.blit(text, text_rect)
             pygame.display.flip()
@@ -301,7 +300,7 @@ def start_game(player, ai_player):
 
         # Verificar se é a vez do jogador humano ou da IA e atualizar o texto
         if current_player != 'X' and current_player != 'G':
-            turn_text = font.render("Player's turn: " + current_player, True, BLACK)
+            turn_text = font.render("Vez do jogador: " + current_player, True, BLACK)
             turn_text_rect = turn_text.get_rect(center=(SCREEN_WIDTH // 2, 600))
             screen.blit(turn_text, turn_text_rect)
 
@@ -331,9 +330,9 @@ def start_game(player, ai_player):
                         pygame.display.flip()
                         if check_victory(board, current_player):
                             if current_player == 'X':
-                                message = 'Player G wins!'
+                                message = 'Jogador G ganhou!'
                             else:
-                                message = f'Player {current_player} wins!'
+                                message = f'Jogador {current_player} ganhou!'
                             font = pygame.font.Font(None, 36)
                             text = font.render(message, True, BLACK)
                             text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, 600))
