@@ -187,11 +187,14 @@ def start_game(player, ai_player):
         gold_count = sum(row.count('G') for row in board)
 
         if player == 'S':
-            return silver_count - gold_count
+            captured_x = sum(row.count('X') for row in board)
+            return silver_count - gold_count + captured_x
         else:
-            return gold_count - silver_count
+            captured_silver = sum(row.count('X') for row in board)
+            return gold_count - silver_count + captured_silver
 
-    def minimax(board, depth, player):
+
+    def minimax(board, depth, player, alpha=float('-inf'), beta=float('inf')):
         if depth == 0 or check_victory(board, 'S') or check_victory(board, 'G'):
             evaluation = evaluate(board, player)
             return evaluation, None
@@ -206,10 +209,17 @@ def start_game(player, ai_player):
                         for move in piece_moves:
                             new_board = copy.deepcopy(board)
                             new_board, was_moved = move_piece(new_board, 'S', row, col, move[0], move[1])
-                            eval, _ = minimax(new_board, depth - 1, 'G')
+                            eval, _ = minimax(new_board, depth - 1, 'G', alpha, beta)
+                            if board[move[0]][move[1]] == 'X':
+                                eval += 10
                             if eval > max_eval:
                                 max_eval = eval
                                 best_move = (row, col, move[0], move[1])
+                            alpha = max(alpha, eval)
+                            if alpha >= beta:
+                                break
+                if alpha >= beta:
+                    break
             return max_eval, best_move
         else:
             min_eval = float('inf')
@@ -221,10 +231,15 @@ def start_game(player, ai_player):
                         for move in piece_moves:
                             new_board = copy.deepcopy(board)
                             new_board, was_moved = move_piece(new_board, 'G', row, col, move[0], move[1])
-                            eval, _ = minimax(new_board, depth - 1, 'S')
+                            eval, _ = minimax(new_board, depth - 1, 'S', alpha, beta)
                             if eval < min_eval:
                                 min_eval = eval
                                 best_move = (row, col, move[0], move[1])
+                            beta = min(beta, eval)
+                            if beta <= alpha:
+                                break
+                if beta <= alpha:
+                    break
             return min_eval, best_move
 
 
@@ -260,9 +275,9 @@ def start_game(player, ai_player):
     current_player = player 
     while True:
         draw_board(screen, board)
-        if check_victory(board, "G"):
+        if check_victory(board, "G") or check_victory(board, "S"):
             font = pygame.font.Font(None, 36)
-            text = font.render('Jogador G ganhou!', True, BLACK)
+            text = font.render(f'Jogador {current_player} ganhou!', True, BLACK)
             text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, 600))
             screen.blit(text, text_rect)
             pygame.display.flip()
@@ -322,7 +337,6 @@ def start_game(player, ai_player):
 
 
         if current_player == ai_player:
-            print(ai_player)
             turn_text = font.render("Vez do jogador: " + ai_player, True, BLACK)
             turn_text_rect = turn_text.get_rect(center=(SCREEN_WIDTH // 2, 600))
             screen.blit(turn_text, turn_text_rect)
