@@ -87,7 +87,7 @@ A implementação do algoritmo Minimax com Poda Alpha-Beta oferece resultados su
 **Qualidade das Decisões:** a qualidade das decisões permanece alta, já que o algoritmo ainda é capaz de encontrar a jogada ótima, mas em menos tempo.
 **Escalabilidade:** a escalabilidade é melhorada com a poda alpha-beta, permitindo que o algoritmo lide com jogos de damas maiores com maior eficiência do que a versão sem poda.
 
-- Heurítiscas Uitlizadas:
+**Heurítiscas Uitlizadas:**
 Para o jogador S, a heurística leva em consideração se aproximar de X e, caso haja alguma peça de G para capturar no caminho, ele irá capturar. Caso haja X para captura, ele deve dar uma prioriodade maior na caputra de X.
 Para o jogador G, a heurística leva em consideração se há peças de S para captura, até eliminar todas. 
 
