@@ -129,6 +129,7 @@ def start_game(player, ai_player):
 
         board[to_row][to_col] = piece
         board[from_row][from_col] = '-'
+
         return board, True
 
     def get_moves(board, row, col, piece):
@@ -139,19 +140,14 @@ def start_game(player, ai_player):
         # Movimentos para frente, trás e para os lados
         for dr, dc in directions:
             r, c = row + dr, col + dc
-            while 0 <= r < len(board) and 0 <= c < len(board[0]):
-                if board[r][c] == "-":
-                    moves.append((r, c))
-                else:
-                    break
-                r += dr
-                c += dc
+            if 0 <= r < len(board) and 0 <= c < len(board[0]) and board[r][c] == "-":
+                moves.append((r, c))
 
         # Movimentos de "roubo" de posição nas diagonais
         for dr, dc in diagonal_directions:
             r, c = row + dr, col + dc
             if 0 <= r < len(board) and 0 <= c < len(board[0]):
-                if (piece == "S" and board[r][c] == "G") or (piece == 'G' and board[r][c] == 'S') or (piece == 'S' and board[r][c] == 'X'):
+                if (piece == "S" and board[r][c] == "G") or (piece == 'G' and board[r][c] == 'S') or (piece == 'S' and board[r][c] == 'X') or (piece == 'X' and board[r][c] == 'S'):
                     moves.append((r, c))
 
         return moves
@@ -228,7 +224,7 @@ def start_game(player, ai_player):
                         alpha = max(alpha, eval)
                         if alpha >= beta:
                             break
-            if best_move is None: 
+            if best_move is None:
                 for row in range(7):
                     for col in range(7):
                         if board[row][col] == 'S':
@@ -266,7 +262,6 @@ def start_game(player, ai_player):
                 if beta <= alpha:
                     break
             return min_eval, best_move
-
 
 
     def move_ai(board, ai_player):
@@ -370,8 +365,6 @@ def start_game(player, ai_player):
                     current_player = 'G'
                 else:
                     current_player = 'S'
-
-
 
         clock.tick(60)
 
