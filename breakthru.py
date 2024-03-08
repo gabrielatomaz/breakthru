@@ -13,7 +13,7 @@ def main():
     is_running = True
 
     pygame_gui.elements.UILabel(relative_rect=pygame.Rect((200, 180), (150, 100)),
-                                            text='Quem irá iniciar?', manager=manager)
+                                            text='Quem irá iniciar?', manager=manager)                                          
     silver_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((80, 250), (150, 50)),
                                                   text='Cinza', manager=manager)
     gold_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((330, 250), (150, 50)),
@@ -190,8 +190,7 @@ def start_game(player, ai_player):
             captured_x = sum(row.count('X') for row in board)
             return silver_count - gold_count + captured_x
         else:
-            captured_silver = sum(row.count('X') for row in board)
-            return gold_count - silver_count + captured_silver
+            return gold_count - silver_count
 
 
     def minimax(board, depth, player, alpha=float('-inf'), beta=float('inf')):
@@ -276,7 +275,6 @@ def start_game(player, ai_player):
     while True:
         draw_board(screen, board)
         if check_victory(board, "G") or check_victory(board, "S"):
-            font = pygame.font.Font(None, 36)
             text = font.render(f'Jogador {current_player} ganhou!', True, BLACK)
             text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, 600))
             screen.blit(text, text_rect)
@@ -314,7 +312,6 @@ def start_game(player, ai_player):
                         pygame.display.flip()
                         if check_victory(board, current_player):
                             message = f'Jogador {current_player} ganhou!'
-                            font = pygame.font.Font(None, 36)
                             text = font.render(message, True, BLACK)
                             text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, 600))
                             screen.blit(text, text_rect)
