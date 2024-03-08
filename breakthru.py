@@ -222,7 +222,7 @@ def start_game(player, ai_player):
                             eval += 15
                         elif board[move[0]][move[1]] == 'G':
                             eval += 5  
-                        if eval > max_eval:
+                        if eval >= max_eval:
                             max_eval = eval
                             best_move = (row, col, move[0], move[1])
                         alpha = max(alpha, eval)
