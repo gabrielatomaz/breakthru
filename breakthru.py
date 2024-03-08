@@ -214,22 +214,37 @@ def start_game(player, ai_player):
                             if g_moves:  
                                 move = g_moves[0]  
                             else:
-                                continue  
+                                continue
                         new_board = copy.deepcopy(board)
                         new_board, was_moved = move_piece(new_board, 'S', row, col, move[0], move[1])
                         eval, _ = minimax(new_board, depth - 1, 'G', alpha, beta)
                         if board[move[0]][move[1]] == 'X':
                             eval += 15
                         elif board[move[0]][move[1]] == 'G':
-                            eval += 5  
+                            eval += 5 
                         if eval >= max_eval:
                             max_eval = eval
                             best_move = (row, col, move[0], move[1])
                         alpha = max(alpha, eval)
                         if alpha >= beta:
                             break
-                if alpha >= beta:
-                    break
+            if best_move is None: 
+                for row in range(7):
+                    for col in range(7):
+                        if board[row][col] == 'S':
+                            piece_moves = get_moves(board, row, col, 'S')
+                            for move in piece_moves:
+                                new_board = copy.deepcopy(board)
+                                new_board, was_moved = move_piece(new_board, 'S', row, col, move[0], move[1])
+                                eval, _ = minimax(new_board, depth - 1, 'G', alpha, beta)
+                                if eval >= max_eval:
+                                    max_eval = eval
+                                    best_move = (row, col, move[0], move[1])
+                                alpha = max(alpha, eval)
+                                if alpha >= beta:
+                                    break
+                    if alpha >= beta:
+                        break
             return max_eval, best_move
         else:
             min_eval = float('inf')
@@ -251,6 +266,7 @@ def start_game(player, ai_player):
                 if beta <= alpha:
                     break
             return min_eval, best_move
+
 
 
     def move_ai(board, ai_player):
@@ -330,7 +346,6 @@ def start_game(player, ai_player):
                             pygame.time.delay(3000)
                             pygame.quit()
                             sys.exit()
-
                         if current_player == "S":
                             current_player = "G"
                         elif current_player == "G":
@@ -343,7 +358,6 @@ def start_game(player, ai_player):
 
                     from_row, from_col = None, None
 
-
         if current_player == ai_player:
             turn_text = font.render("Vez do jogador: " + ai_player, True, BLACK)
             turn_text_rect = turn_text.get_rect(center=(SCREEN_WIDTH // 2, 600))
@@ -351,7 +365,6 @@ def start_game(player, ai_player):
             pygame.display.flip()
 
             board = move_ai(board, ai_player)
-
             if (not check_victory(board, current_player)):
                 if (current_player == 'S'):
                     current_player = 'G'
