@@ -62,7 +62,7 @@ Nesta implementação, o algoritmo Minimax é utilizado para tomar decisões em 
 - **Poda Alpha-Beta**: Implementa a Poda Alpha-Beta para otimizar o algoritmo Minimax, reduzindo o espaço de busca.
 - **Busca Recursiva com Profundidade Limitada**: O algoritmo Minimax é implementado recursivamente com um limite de profundidade para evitar uma busca exaustiva.
 - **Heurística de Avaliação**: Para o jogador S, a heurística leva em consideração se aproximar de X e, caso haja alguma peça de G para capturar no caminho, ele irá capturar. Caso haja X para captura, ele deve dar
-  uma prioriodade maior na caputra de X. Para o jogador G, a heurística leva em consideração se há peças de S para captura, até eliminar todas.
+ prioriodade na caputra de X. Para o jogador G, caso haja peças de S para captura, ele deve capturar.
 - **Geração de Movimentos**: Gera todos os movimentos possíveis para uma peça de um jogador específico no tabuleiro.
 - **Alternância de Jogadores**: Alterna entre turnos de maximização e minimização dos jogadores durante a busca.
 - **Verificação de Condição de Vitória**: Verifica as condições de vitória para determinar o fim do jogo.
