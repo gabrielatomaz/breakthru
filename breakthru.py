@@ -188,7 +188,8 @@ def start_game(player, ai_player):
 
         if player == 'S':
             captured_x = sum(row.count('X') for row in board)
-            return silver_count - gold_count + captured_x
+            captured_g = sum(row.count('G') for row in board)
+            return silver_count - gold_count + captured_x + captured_g
         else:
             return gold_count - silver_count
 
@@ -205,18 +206,28 @@ def start_game(player, ai_player):
                 for col in range(7):
                     if board[row][col] == 'S':
                         piece_moves = get_moves(board, row, col, 'S')
-                        for move in piece_moves:
-                            new_board = copy.deepcopy(board)
-                            new_board, was_moved = move_piece(new_board, 'S', row, col, move[0], move[1])
-                            eval, _ = minimax(new_board, depth - 1, 'G', alpha, beta)
-                            if board[move[0]][move[1]] == 'X':
-                                eval += 10
-                            if eval > max_eval:
-                                max_eval = eval
-                                best_move = (row, col, move[0], move[1])
-                            alpha = max(alpha, eval)
-                            if alpha >= beta:
-                                break
+                        x_moves = [(move[0], move[1]) for move in piece_moves if board[move[0]][move[1]] == 'X']
+                        if x_moves:  
+                            move = x_moves[0] 
+                        else:
+                            g_moves = [(move[0], move[1]) for move in piece_moves if board[move[0]][move[1]] == 'G']
+                            if g_moves:  
+                                move = g_moves[0]  
+                            else:
+                                continue  
+                        new_board = copy.deepcopy(board)
+                        new_board, was_moved = move_piece(new_board, 'S', row, col, move[0], move[1])
+                        eval, _ = minimax(new_board, depth - 1, 'G', alpha, beta)
+                        if board[move[0]][move[1]] == 'X':
+                            eval += 15
+                        elif board[move[0]][move[1]] == 'G':
+                            eval += 5  
+                        if eval > max_eval:
+                            max_eval = eval
+                            best_move = (row, col, move[0], move[1])
+                        alpha = max(alpha, eval)
+                        if alpha >= beta:
+                            break
                 if alpha >= beta:
                     break
             return max_eval, best_move
