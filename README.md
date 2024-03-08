@@ -61,7 +61,8 @@ Nesta implementação, o algoritmo Minimax é utilizado para tomar decisões em 
 - **Algoritmo Minimax**: Utiliza o algoritmo Minimax para tomar decisões ótimas em um jogo de damas.
 - **Poda Alpha-Beta**: Implementa a Poda Alpha-Beta para otimizar o algoritmo Minimax, reduzindo o espaço de busca.
 - **Busca Recursiva com Profundidade Limitada**: O algoritmo Minimax é implementado recursivamente com um limite de profundidade para evitar uma busca exaustiva.
-- **Heurística de Avaliação**: Avalia o estado atual do tabuleiro usando uma heurística simples para estimar a vantagem de cada jogador.
+- **Heurística de Avaliação**: Para o jogador S, a heurística leva em consideração se aproximar de X e, caso haja alguma peça de G para capturar no caminho, ele irá capturar. Caso haja X para captura, ele deve dar
+  uma prioriodade maior na caputra de X. Para o jogador G, a heurística leva em consideração se há peças de S para captura, até eliminar todas.
 - **Geração de Movimentos**: Gera todos os movimentos possíveis para uma peça de um jogador específico no tabuleiro.
 - **Alternância de Jogadores**: Alterna entre turnos de maximização e minimização dos jogadores durante a busca.
 - **Verificação de Condição de Vitória**: Verifica as condições de vitória para determinar o fim do jogo.
@@ -86,11 +87,6 @@ A implementação do algoritmo Minimax com Poda Alpha-Beta oferece resultados su
 **Eficiência Computacional:** com a poda alpha-beta implementada, o algoritmo minimax consegue cortar os ramos da árvore de busca que não afetam a decisão final, reduzindo de forma significativa o tempo de execução em comparação com a versão sem a poda.
 **Qualidade das Decisões:** a qualidade das decisões permanece alta, já que o algoritmo ainda é capaz de encontrar a jogada ótima, mas em menos tempo.
 **Escalabilidade:** a escalabilidade é melhorada com a poda alpha-beta, permitindo que o algoritmo lide com jogos de damas maiores com maior eficiência do que a versão sem poda.
-
-**Heurítiscas Uitlizadas:**
-Para o jogador S, a heurística leva em consideração se aproximar de X e, caso haja alguma peça de G para capturar no caminho, ele irá capturar. Caso haja X para captura, ele deve dar uma prioriodade maior na caputra de X.
-Para o jogador G, a heurística leva em consideração se há peças de S para captura, até eliminar todas. 
-
 
 #### Créditos
 
